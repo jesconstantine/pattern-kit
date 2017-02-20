@@ -12,7 +12,7 @@
         "psr/log": "^1.0",
         "twig/twig": "1.24.*",
         "silex/silex": "=1.2.5",
-        "justinrainbow/json-schema": "~1.4",
+        "justinrainbow/json-schema": "~2.0",
         "deralex/yaml-config-service-provider": "@dev",
         "monolog/monolog": "~1.6",
         "nesbot/Carbon": "~1.6",

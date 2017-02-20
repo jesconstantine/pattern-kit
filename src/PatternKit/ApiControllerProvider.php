@@ -69,14 +69,16 @@ class ApiControllerProvider implements ControllerProviderInterface
 
                 function test($data, &$reply) {
                     $retriever = new \JsonSchema\Uri\UriRetriever;
-                    $refResolver = new \JsonSchema\RefResolver($retriever);
-                    $refResolver::$maxDepth = 9999;
+                    $resolver = new \JsonSchema\Uri\UriResolver;
+                    $refResolver = new \JsonSchema\RefResolver($retriever,$resolver);
+                    //  $refResolver::$maxDepth = 9999;
                     $validator = new \JsonSchema\Validator();
                     $valid  = true;
                     foreach ($data as $item) {
                         $path = get_asset_path($item['obj']->name, 'schemas');
                         $schema = $retriever->retrieve('file://' . realpath($path));
-                        $refResolver->resolve($schema);
+//                        $refResolver->resolve($schema);
+                        $refResolver->resolve('file://' . realpath($path));
 
                         //Validate
                         $validator->check($item['obj'], $schema);
@@ -97,8 +99,9 @@ class ApiControllerProvider implements ControllerProviderInterface
                 $to_test = array();
                 $reply = "";
                 $retriever = new \JsonSchema\Uri\UriRetriever;
-                $refResolver = new \JsonSchema\RefResolver($retriever);
-                $refResolver::$maxDepth = 9999;
+                $resolver = new \JsonSchema\Uri\UriResolver;
+                $refResolver = new \JsonSchema\RefResolver($retriever,$resolver);
+//                $refResolver::$maxDepth = 9999;
                 $validator = new \JsonSchema\Validator();
 
                 $data = (object) json_decode($request->getContent());
@@ -108,7 +111,8 @@ class ApiControllerProvider implements ControllerProviderInterface
 
                 $schema = $retriever->retrieve('file://' . realpath($path));
 
-                $refResolver->resolve($schema);
+//                $refResolver->resolve($schema);
+                $refResolver->resolve('file://' . realpath($path));
 
                 //Validate
                 $validator->check($data, $schema);

@@ -17,6 +17,7 @@ class SchemaControllerProvider implements ControllerProviderInterface
         $controllers->get('/{pattern}', function ($pattern) use ($app) {
 
             $retriever = new \JsonSchema\Uri\UriRetriever;
+            $resolver = new \JsonSchema\Uri\UriResolver;
             $path = get_asset_path($pattern, 'schemas');
             $seed_path = get_asset_path($pattern, 'data');
             $template_path = get_asset_path($pattern, 'templates');
@@ -53,9 +54,10 @@ class SchemaControllerProvider implements ControllerProviderInterface
             else $seed_data = array();
 
 
-            $refResolver = new \JsonSchema\RefResolver($retriever);
-            $refResolver::$maxDepth = 9999;
-            $refResolver->resolve($schema);
+            $refResolver = new \JsonSchema\RefResolver($retriever,$resolver);
+//            $refResolver::$maxDepth = 9999;
+//            $refResolver->resolve($schema);
+            $refResolver->resolve('file://' . realpath($path));
 
             if (isset($app['config'])) {
                 $data["app_config"] = $app['config'];
