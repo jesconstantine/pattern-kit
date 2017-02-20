@@ -87,6 +87,20 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
         ),
 ));
 
+//// Register twig namespaces
+/**
+ * app.config.namespaces is a yaml associative array
+ * ...
+ * namespaces:
+ *   atoms: _patterns/atoms
+ *   molecules: _patterns/molecules
+ */
+if (is_array($app['config']['namespaces'])) {
+  foreach ($app['config']['namespaces'] as $key => $value) {
+    $app['twig.loader.filesystem']->addPath(realpath('./' . $value), $key);
+  }
+}
+
 
 // Custom Functions
 
